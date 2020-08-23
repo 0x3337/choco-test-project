@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::prefix('product')
+  ->group(base_path('routes/api/product.php'));
+
+Route::prefix('category')
+  ->group(base_path('routes/api/category.php'));
