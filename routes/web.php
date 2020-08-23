@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Category;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,6 +23,7 @@ Route::get('/shop/p/{product_id?}', function ($product_id = null) {
   return view('pages.shop.product');
 });
 
-Route::get('/shop/{category?}', function ($category = null) {
-  return view('pages.shop.shop');
+Route::get('/shop/{categorySlug?}', function ($categorySlug = null) {
+  $category = Category::where('slug', $categorySlug)->first();
+  return view('pages.shop.shop', ['category' => $category]);
 });

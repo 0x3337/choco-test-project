@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
         'first_name' => $faker->firstName,
         'last_name' => $faker->lastName,
 
-        'email' => "{$role}@example.org",
+        'email' => $role . '@example.org',
         'password' => Hash::make('password'),
         'role' => $role,
 

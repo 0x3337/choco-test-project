@@ -4,10 +4,6 @@
 
 		<ul class="nav-list right">
       <li>
-        <a class="nl-link" href="/">Home</a>
-      </li>
-
-      <li>
         <a class="nl-link" href="/shop">Shop</a>
       </li>
 

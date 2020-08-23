@@ -35,3 +35,17 @@ Route::post('/update', function (Request $request) {
     ]);
   }
 });
+
+Route::post('get_all', function (Request $request) {
+  try {
+    $categories = Category::select('name', 'slug')->get();
+    return Response::json([
+      'success' => true,
+      'categories' => $categories,
+    ]);
+  } catch (Throwable $error) {
+    return Response::json([
+      'success' => false,
+    ]);
+  }
+});

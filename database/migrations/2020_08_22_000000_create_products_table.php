@@ -22,6 +22,8 @@ class CreateProductsTable extends Migration
       $table->double('package_height')->nullable();
       $table->double('package_depth')->nullable();
       $table->double('package_weight')->nullable();
+
+      $table->string('filename')->nullable();
       
       $table->timestamps();
     });

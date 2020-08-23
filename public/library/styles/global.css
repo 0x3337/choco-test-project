@@ -167,6 +167,52 @@ section {
   margin: 0 auto;
 }
 
+
+.shop-container {
+  display: flex;
+}
+
+.shop-categories {
+  width: 192px;
+  margin-right: 24px;
+}
+
+.shop-results {
+  width: 936px;
+}
+
+
+.product-list {
+  width: calc(100% + 32px);
+  margin: 0 -16px;
+
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.pl-item {
+  width: 210px;
+  margin: 0 16px 32px;
+}
+
+.pl-i-image-box {
+  width: 100%;
+  height: 296px;
+
+  position: relative;
+}
+
+.pl-i-image-box > img {
+  max-height: 100%;
+
+  transform: translate(-50%, -50%);
+  transition: max-height 0.3s cubic-bezier(.25, .1, .25, 1);
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
 /*=========================================== footer ==========================================*/
 
 footer {
