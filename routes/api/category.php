@@ -17,24 +17,24 @@ Route::post('/create', function (Request $request) {
     return Response::json([
       'success' => true,
     ]);
-  } catch (Throwable $error) {
+  } catch (Exception $error) {
     return Response::json([
       'success' => false,
     ]);
   }
-});
+})->middleware('auth');
 
 Route::post('/update', function (Request $request) {
   try {
     return Response::json([
       'success' => true,
     ]);
-  } catch (Throwable $error) {
+  } catch (Exception $error) {
     return Response::json([
       'success' => false,
     ]);
   }
-});
+})->middleware('auth');
 
 Route::post('get_all', function (Request $request) {
   try {
@@ -43,7 +43,7 @@ Route::post('get_all', function (Request $request) {
       'success' => true,
       'categories' => $categories,
     ]);
-  } catch (Throwable $error) {
+  } catch (Exception $error) {
     return Response::json([
       'success' => false,
     ]);

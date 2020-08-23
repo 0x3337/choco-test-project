@@ -7,9 +7,16 @@
         <a class="nl-link" href="/shop">Shop</a>
       </li>
 
-      <li>
-        <a class="nl-link" href="/login">Login</a>
-      </li>
+      @guest
+        <li>
+          <a class="nl-link" href="/login">Login</a>
+        </li>
+      @endguest
+      @auth
+        <li>
+          <a class="nl-link" href="/logout">Logout</a>
+        </li>
+      @endauth
 		</ul>
 	</nav>
 </header>

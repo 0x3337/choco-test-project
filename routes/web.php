@@ -1,7 +1,10 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
+use App\User;
 use App\Category;
 
 /*
@@ -17,6 +20,19 @@ use App\Category;
 
 Route::get('/', function () {
 	return view('pages.home');
+});
+
+Route::get('/login', function () {
+  if (Auth::check()) {
+    return redirect('/');
+  }
+
+  return view('pages.login');
+});
+
+Route::get('/logout', function () {
+  Auth::logout();
+  return redirect('/');
 });
 
 Route::get('/shop/p/{product_id?}', function ($product_id = null) {

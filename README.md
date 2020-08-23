@@ -1,9 +1,7 @@
 # Choco Test Project
 
-To create database run:
-`php artisan migrate`
+To create database run: `php artisan migrate`
 
-To genereate data for database run:
-`php artisan db:seed`
+To genereate data for database run: `php artisan db:seed`
 
-`php artisan serve`
+Run server command: `php artisan serve`
