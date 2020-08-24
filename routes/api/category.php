@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Category;
+use App\Http\Resources\Category as CategoryResource;
 
 Route::post('/create', function (Request $request) {
   try {
@@ -16,6 +17,7 @@ Route::post('/create', function (Request $request) {
 
     return Response::json([
       'success' => true,
+      'category' => new CategoryResource($category),
     ]);
   } catch (Exception $error) {
     return Response::json([
@@ -26,6 +28,29 @@ Route::post('/create', function (Request $request) {
 
 Route::post('/update', function (Request $request) {
   try {
+    $category = Category::find($request->input('id'));
+
+    $category->name = $request->input('name', $category->name);
+    $category->slug = $request->input('slug', $category->slug);
+
+    $category->save();
+
+    return Response::json([
+      'success' => true,
+      'category' => new CategoryResource($category),
+    ]);
+  } catch (Exception $error) {
+    return Response::json([
+      'success' => false,
+    ]);
+  }
+})->middleware('auth');
+
+Route::post('/delete', function (Request $request) {
+  try {
+    $category = Category::find($request->input('id'));
+    $category->delete();
+
     return Response::json([
       'success' => true,
     ]);
@@ -38,10 +63,11 @@ Route::post('/update', function (Request $request) {
 
 Route::post('get_all', function (Request $request) {
   try {
-    $categories = Category::select('name', 'slug')->get();
+    $categories = Category::all();
+
     return Response::json([
       'success' => true,
-      'categories' => $categories,
+      'categories' => CategoryResource::collection($categories),
     ]);
   } catch (Exception $error) {
     return Response::json([

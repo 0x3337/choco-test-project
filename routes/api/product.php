@@ -2,10 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
 
 use App\Product;
+use App\Http\Resources\Product as ProductResource;
 
 Route::post('/create', function (Request $request) {
   $categoryIds = $request->input('categoryIds');
@@ -26,6 +26,7 @@ Route::post('/create', function (Request $request) {
 
     return Response::json([
       'success' => true,
+      'product' => new ProductResource($product),
     ]);
   } catch (Exception $error) {
     return Response::json([
@@ -36,6 +37,34 @@ Route::post('/create', function (Request $request) {
 
 Route::post('/update', function (Request $request) {
   try {
+    $product = Product::find($request->input('id'));
+
+    $product->name = $request->input('name', $product->name);
+    $product->price = $request->input('price', $product->price);
+
+    $product->package_width = $request->input('package_width', $product->package_width);
+    $product->package_height = $request->input('package_height', $product->package_height);
+    $product->package_depth = $request->input('package_depth', $product->package_depth);
+    $product->package_weight = $request->input('package_weight', $product->package_weight);
+
+    $product->save();
+
+    return Response::json([
+      'success' => true,
+      'product' => new ProductResource($product),
+    ]);
+  } catch (Exception $error) {
+    return Response::json([
+      'success' => false,
+    ]);
+  }
+})->middleware('auth');
+
+Route::post('/delete', function (Request $request) {
+  try {
+    $product = Product::find($request->input('id'));
+    $product->delete();
+
     return Response::json([
       'success' => true,
     ]);
@@ -50,32 +79,23 @@ Route::post('/get_all', function (Request $request) {
   try {
     $categorySlugs = $request->input('categories');
 
-    $productList = [];
     $products = [];
 
     if (is_null($categorySlugs)) {
-      $productList = Product::get();
+      $products = Product::get();
     } else {
       if (!is_array($categorySlugs)) {
         $categorySlugs = [$categorySlugs];
       }
 
-      $productList = Product::whereHas('categories', function (Builder $query) use ($categorySlugs) {
+      $products = Product::whereHas('categories', function (Builder $query) use ($categorySlugs) {
         $query->whereIn('slug', $categorySlugs);
       })->get();
     }
 
-    foreach ($productList as $p) {
-      array_push($products, [
-        'name' => $p->name,
-        'price' => $p->price,
-        'imagePath' => Storage::url($p->filename),
-      ]);
-    }
-
     return Response::json([
       'success' => true,
-      'products' => $products,
+      'products' => ProductResource::collection($products),
     ]);
   } catch (Exception $error) {
     return Response::json([
