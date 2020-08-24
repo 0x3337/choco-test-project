@@ -4,7 +4,7 @@
 <main>
   <section>
     <div class="wrap">
-      <h1>Product</h1>
+      <h1 class="sct-title">Product</h1>
     </div>
   </section>
 </main>

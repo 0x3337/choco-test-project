@@ -20,13 +20,13 @@
 
   <template #footer>
     <button
-      class="modal-default-button"
+      class="btn modal-btn"
       @click="modal.category.show = false; category()">
       @{{ modal.category.action | capitalize }}
     </button>
 
     <button
-      class="modal-default-button"
+      class="btn modal-btn"
       @click="modal.category.show = false">
       Close
     </button>

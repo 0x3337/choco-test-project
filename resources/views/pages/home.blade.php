@@ -4,7 +4,7 @@
 <main>
   <section>
     <div class="wrap">
-      <h1>Home</h1>
+      <h1 class="sct-title">Home</h1>
     </div>
   </section>
 </main>

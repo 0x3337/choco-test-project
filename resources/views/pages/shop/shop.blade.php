@@ -4,7 +4,7 @@
 <main id="shop">
   <section>
     <div class="wrap">
-      <h1>Shop</h1>
+      <h1 class="sct-title">Shop</h1>
 
       <div class="shop-container">
         <div class="shop-categories">
@@ -17,7 +17,7 @@
 
             @role('admin')
               <li>
-                <a class="sc-nav-link" @click="showCategoryModal">
+                <a class="sc-nav-link black" @click="showCategoryModal">
                   <span>Create Category</span>
                 </a>
               </li>
