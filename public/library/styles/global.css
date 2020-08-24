@@ -25,6 +25,39 @@ li { list-style-type: none; }
 
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400');
 
+@font-face {
+  font-family: 'icons';
+  src:
+    url('../fonts/icons.ttf?d7svin') format('truetype'),
+    url('../fonts/icons.woff?d7svin') format('woff'),
+    url('../fonts/icons.svg?d7svin#icons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icons' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-edit:before {
+  content: "\e900";
+}
+.icon-trash:before {
+  content: "\f014";
+}
+
 /*======================================= general styles ======================================*/
 
 :root {

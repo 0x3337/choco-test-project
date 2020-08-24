@@ -1,24 +1,20 @@
 @extends('layouts.main')
 
 @section('page')
-  @auth
-    The user is authenticated...
-  @endauth
+<main id="login">
+  <section>
+    <div class="wrap">
+      <h1>Login</h1>
 
-  <main id="login">
-    <section>
-      <div class="wrap">
-        <h1>Login</h1>
+      <form>
+        <input type="text" v-model="email" placeholder="E-mail">
+        <input type="password" v-model="password" placeholder="Password">
 
-        <form>
-          <input type="text" v-model="email" placeholder="E-mail">
-          <input type="password" v-model="password" placeholder="Password">
-
-          <button v-on:click="login">Login</button>
-        </form>
-      </div>
-    </section>
-  </main>
+        <button @click.prevent="login">Login</button>
+      </form>
+    </div>
+  </section>
+</main>
 @stop
 
 @push('scripts')
@@ -32,8 +28,6 @@
         },
         methods: {
           login: function (event) {
-            event.preventDefault();
-
             l2.ajax({
               url: '/auth/login',
               json: {
