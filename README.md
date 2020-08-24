@@ -33,12 +33,6 @@ Generate your application encryption key using:
 $ php artisan key:generate
 ```
 
-Run the following command to publish the package config file:
-
-```
-$ php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider"
-```
-
 Generate secret key
 
 ```
