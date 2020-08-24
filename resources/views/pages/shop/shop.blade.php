@@ -39,14 +39,26 @@
   </section>
 
   <modal v-if="modal.category.show" @close="modal.category.show = false">
-    <h3 slot="header">@{{ modal.category.action | capitalize }} Category</h3>
-
-    <template v-slot:body>
-      <input type="text" placeholder="Name" v-model="categoryName" @input="updateCategoryName">
-      <input type="text" placeholder="Slug" v-model="categorySlug">
+    <template #header>
+      <h3>@{{ modal.category.action | capitalize }} Category</h3>
     </template>
 
-    <template v-slot:footer>
+    <template #body>
+      <input
+        type="text"
+        placeholder="Name"
+
+        :value="currentCategory.name"
+        @input="update(currentCategory, 'name', $event); updateCategoryName()">
+      <input
+        type="text"
+        placeholder="Slug"
+
+        :value="currentCategory.slug"
+        @input="update(currentCategory, 'slug', $event);">
+    </template>
+
+    <template #footer>
       <button
         class="modal-default-button"
         @click="modal.category.show = false; category()">
@@ -56,6 +68,42 @@
       <button
         class="modal-default-button"
         @click="modal.category.show = false">
+        Close
+      </button>
+    </template>
+  </modal>
+
+  <modal v-if="modal.product.show" @close="modal.product.show = false">
+    <template #header>
+      <h3>@{{ modal.product.action | capitalize }} Product</h3>
+    </template>
+
+    <template #body>
+      <input
+        type="text"
+        placeholder="Name"
+
+        :value="currentProduct.name"
+        @input="update(currentProduct, 'name', $event)">
+
+      <input
+        type="text"
+        placeholder="Price"
+
+        :value="currentProduct.price"
+        @input="update(currentProduct, 'price', $event)">
+    </template>
+
+    <template #footer>
+      <button
+        class="modal-default-button"
+        @click="modal.product.show = false; product()">
+        @{{ modal.product.action | capitalize }}
+      </button>
+
+      <button
+        class="modal-default-button"
+        @click="modal.product.show = false">
         Close
       </button>
     </template>
@@ -136,7 +184,6 @@
     <div class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container">
-
           <div class="modal-header">
             <slot name="header">
           </div>
@@ -195,9 +242,7 @@
           shop.modal.category.show = true;
           shop.modal.category.action = 'update';
 
-          shop.categoryId = category.id;
-          shop.categoryName = category.name;
-          shop.categorySlug = category.slug;
+          shop.currentCategory = Object.assign({}, category);
         }
       }
     });
@@ -214,9 +259,25 @@
             <img :src="product.imagePath">
           </div>
 
-          <h3>@{{ product.name }}</h3>
+          <h3>
+            <span>@{{ product.name }}</span>
+
+            @auth
+              <button @click="showProductModal(product)">
+                <i class="icon-edit"></i>
+              </button>
+            @endauth
+          </h3>
           <p>@{{ product.price }}</p>
         </div>`,
+      methods: {
+        showProductModal: function (product) {
+          shop.modal.product.show = true;
+          shop.modal.product.action = 'update';
+
+          shop.currentProduct = Object.assign({}, product);
+        }
+      }
     });
 
     var shop = new Vue({
@@ -226,81 +287,112 @@
           category: {
             show: false,
             action: 'create',
-          }
+          },
+
+          product: {
+            show: false,
+            action: 'create',
+          },
         },
-        categoryId: 0,
-        categoryName: '',
-        categorySlug: '',
+
+        currentCategory: {},
         categoryList: [],
+
+        currentProduct: {},
         productList: [],
       },
       methods: {
+        update: function(obj, prop, event) {
+          Vue.set(obj, prop, event.target.value);
+        },
+
         showCategoryModal: function () {
           shop.modal.category.show = true;
           shop.modal.category.action = 'create';
 
-          shop.categoryName = '';
-          shop.categorySlug = '';
+          shop.currentCategory = {};
+        },
+
+        showProductModal: function () {
+          shop.modal.product.show = true;
+          shop.modal.product.action = 'create';
+
+          shop.currentProduct = {};
         },
 
         updateCategoryName: function () {
-          var text = this.categoryName;
+          var text = this.currentCategory.name;
 
           text = text.replace(/&/g, 'and');
           text = text.replace(/[^\w\d]+/g, '-');
           text = text.replace(/-+/, '-');
           text = text.toLowerCase();
 
-          this.categorySlug = text;
+          this.currentCategory.slug = text;
         },
+
 
         category: function () {
           l2.ajax({
             url: '/api/category/' + this.modal.category.action,
-            json: {
-              id: this.categoryId,
-              name: this.categoryName,
-              slug: this.categorySlug,
-            },
+            json: this.currentCategory,
             success: function (res) {
-              shop.categoryId = 0;
-              shop.categoryName = '';
-              shop.categorySlug = '';
+              shop.currentCategory = {};
 
               if (res.success) {
                 var index = shop.categoryList.findIndex(c => c.id === res.category.id);
                 if (index >= 0) {
-                  shop.$set(shop.categoryList, index, res.category);
+                  Vue.set(shop.categoryList, index, res.category);
                 } else {
                   shop.categoryList.push(res.category);
                 }
               }
             }
           });
-        }
+        },
+
+        product: function () {
+          l2.ajax({
+            url: '/api/product/' + this.modal.product.action,
+            json: this.currentProduct,
+            success: function (res) {
+              shop.currentProduct = {};
+
+              if (res.success) {
+                var index = shop.productList.findIndex(p => p.id === res.product.id);
+                if (index >= 0) {
+                  Vue.set(shop.productList, index, res.product);
+                } else {
+                  shop.productList.push(res.product);
+                }
+              }
+            }
+          });
+        },
+      },
+      mounted() {
+        l2.ajax({
+          url: '/api/category/get_all',
+          method: 'POST',
+          success: function (res) {
+            if (res.success) {
+              shop.categoryList = res.categories;
+            }
+          },
+        });
+
+        l2.ajax({
+          url: '/api/product/get_all',
+          json: {
+            categories: category,
+          },
+          success: function (res) {
+            if (res.success) {
+              shop.productList = res.products;
+            }
+          },
+        });
       }
-    });
-
-    l2.ajax({
-      url: '/api/category/get_all',
-      method: 'POST',
-      success: function (res) {
-        if (res.success) {
-          shop.categoryList = res.categories;
-        }
-      },
-    });
-
-    l2.ajax({
-      url: '/api/product/get_all',
-      json: {
-        categories: category,
-      },
-      success: function (res) {
-        if (res.success) {
-          shop.productList = res.products;
-        }
-      },
     });
   })();
 </script>
