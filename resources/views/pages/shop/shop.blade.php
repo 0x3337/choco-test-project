@@ -26,9 +26,16 @@
         </div>
 
         <div class="shop-results">
+          <div class="product-filter">
+            <div>
+              <input type="text" placeholder="min" v-model="filter.minPrice">
+              <input type="text" placeholder="max" v-model="filter.maxPrice">
+            </div>
+          </div>
+
           <div class="product-list">
             <product-item
-              v-for="item in productList"
+              v-for="item in productFilteredList"
               :product="item"
               :url="'/shop/p/' + item.id">
             </product-item>
@@ -38,145 +45,10 @@
     </div>
   </section>
 
-  <modal v-if="modal.category.show" @close="modal.category.show = false">
-    <template #header>
-      <h3>@{{ modal.category.action | capitalize }} Category</h3>
-    </template>
-
-    <template #body>
-      <input
-        type="text"
-        placeholder="Name"
-
-        :value="currentCategory.name"
-        @input="update(currentCategory, 'name', $event); updateCategoryName()">
-      <input
-        type="text"
-        placeholder="Slug"
-
-        :value="currentCategory.slug"
-        @input="update(currentCategory, 'slug', $event);">
-    </template>
-
-    <template #footer>
-      <button
-        class="modal-default-button"
-        @click="modal.category.show = false; category()">
-        @{{ modal.category.action | capitalize }}
-      </button>
-
-      <button
-        class="modal-default-button"
-        @click="modal.category.show = false">
-        Close
-      </button>
-    </template>
-  </modal>
-
-  <modal v-if="modal.product.show" @close="modal.product.show = false">
-    <template #header>
-      <h3>@{{ modal.product.action | capitalize }} Product</h3>
-    </template>
-
-    <template #body>
-      <input
-        type="text"
-        placeholder="Name"
-
-        :value="currentProduct.name"
-        @input="update(currentProduct, 'name', $event)">
-
-      <input
-        type="text"
-        placeholder="Price"
-
-        :value="currentProduct.price"
-        @input="update(currentProduct, 'price', $event)">
-    </template>
-
-    <template #footer>
-      <button
-        class="modal-default-button"
-        @click="modal.product.show = false; product()">
-        @{{ modal.product.action | capitalize }}
-      </button>
-
-      <button
-        class="modal-default-button"
-        @click="modal.product.show = false">
-        Close
-      </button>
-    </template>
-  </modal>
+  @include('partials.modals.category')
+  @include('partials.modals.product')
 </main>
 @stop
-
-@push('styles')
-<style type="text/css">
-  .modal-mask {
-    width: 100%;
-    height: 100%;
-
-    display: table;
-    background-color: rgba(0, 0, 0, 0.5);
-    transition: opacity 0.3s ease;
-
-    position: fixed;
-    top: 0;
-    left: 0;
-
-    z-index: 9998;
-  }
-
-  .modal-wrapper {
-    display: table-cell;
-    vertical-align: middle;
-  }
-
-  .modal-container {
-    width: 300px;
-    margin: 0px auto;
-    padding: 20px 30px;
-
-    border-radius: 2px;
-    background-color: #fff;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
-
-    transition: all 0.3s ease;
-  }
-
-  .modal-header h3 {
-    margin-top: 0;
-  }
-
-  .modal-body {
-    margin: 20px 0;
-  }
-
-  .modal-footer {
-    display: flex;
-    flex-flow: row nowrap;
-  }
-
-  .modal-default-button {
-    flex-grow: 1;
-  }
-
-  .modal-enter {
-    opacity: 0;
-  }
-
-  .modal-leave-active {
-    opacity: 0;
-  }
-
-  .modal-enter .modal-container,
-  .modal-leave-active .modal-container {
-    -webkit-transform: scale(1.1);
-    transform: scale(1.1);
-  }
-</style>
-@endpush
 
 @push('scripts')
 <script type="text/x-template" id="modal-template">
@@ -295,6 +167,11 @@
           },
         },
 
+        filter: {
+          minPrice: null,
+          maxPrice: null,
+        },
+
         currentCategory: {},
         categoryList: [],
 
@@ -367,6 +244,21 @@
                 }
               }
             }
+          });
+        },
+      },
+      computed: {
+        productFilteredList: function () {
+          return this.productList.filter(p => {
+            if (!this.filter.minPrice && !this.filter.maxPrice) {
+              return true;
+            }
+
+            var price = parseFloat(p.price);
+            var minPrice = parseFloat(this.filter.minPrice || 0);
+            var maxPrice = parseFloat(this.filter.maxPrice|| Number.MAX_VALUE);
+
+            return price >= minPrice && price <= maxPrice;
           });
         },
       },
