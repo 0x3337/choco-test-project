@@ -203,7 +203,7 @@ section {
 }
 
 .pl-i-image-box > img {
-  max-height: 100%;
+  max-width: 100%;
 
   transform: translate(-50%, -50%);
   transition: max-height 0.3s cubic-bezier(.25, .1, .25, 1);
