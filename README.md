@@ -2,7 +2,7 @@
 
 ## Installing
 
-Go to project folder and install defined dependencies for project by running the `install` command:
+Go to project directory and install defined dependencies for project by running the `install` command:
 
 ```
 $ composer install
