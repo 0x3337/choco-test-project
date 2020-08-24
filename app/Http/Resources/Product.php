@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class Product extends JsonResource
@@ -18,7 +17,7 @@ class Product extends JsonResource
     return [
       'name' => $this->name,
       'price' => $this->price,
-      'imagePath' => Storage::url($this->filename),
+      'imagePath' => '/library/images/shop/' . $this->filename,
     ];
   }
 }
