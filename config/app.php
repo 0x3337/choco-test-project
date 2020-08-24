@@ -177,7 +177,7 @@ return [
 
 
     Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
-
+    App\Providers\BladeServiceProvider::class,
   ],
 
   /*

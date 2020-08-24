@@ -33,7 +33,7 @@ Route::post('/create', function (Request $request) {
       'success' => false,
     ]);
   }
-})->middleware('auth');
+})->middleware('role:admin');
 
 Route::post('/update', function (Request $request) {
   try {
@@ -58,7 +58,7 @@ Route::post('/update', function (Request $request) {
       'success' => false,
     ]);
   }
-})->middleware('auth');
+})->middleware('role:admin');
 
 Route::post('/delete', function (Request $request) {
   try {
@@ -73,7 +73,7 @@ Route::post('/delete', function (Request $request) {
       'success' => false,
     ]);
   }
-})->middleware('auth');
+})->middleware('role:admin');
 
 Route::post('/get_all', function (Request $request) {
   try {

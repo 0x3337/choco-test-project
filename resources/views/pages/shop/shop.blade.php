@@ -15,13 +15,13 @@
               :url="'/shop/' + item.slug">
             </category-item>
 
-            @auth
+            @role('admin')
               <li>
                 <a class="sc-nav-link" @click="showCategoryModal">
                   <span>Create Category</span>
                 </a>
               </li>
-            @endauth
+            @endrole
           </ul>
         </div>
 
@@ -103,11 +103,11 @@
             <span>@{{ category.name }}</span>
           </a>
 
-          @auth
+          @role('admin')
             <button @click="showCategoryModal(category)">
               <i class="icon-edit"></i>
             </button>
-          @endauth
+          @endrole
         </li>`,
       methods: {
         showCategoryModal: function (category) {
@@ -134,11 +134,11 @@
           <h3>
             <span>@{{ product.name }}</span>
 
-            @auth
+            @role('admin')
               <button @click="showProductModal(product)">
                 <i class="icon-edit"></i>
               </button>
-            @endauth
+            @endrole
           </h3>
           <p>@{{ product.price }}</p>
         </div>`,
