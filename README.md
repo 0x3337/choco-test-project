@@ -5,7 +5,7 @@
 Go to project directory and install defined dependencies for project by running the `install` command:
 
 ```
-$ composer install
+composer install
 ```
 
 ## Configure
@@ -13,7 +13,7 @@ $ composer install
 To confugure your environment, you need copy `.env.example` and rename it to `.env`:
 
 ```
-$ cp .env.example .env
+cp .env.example .env
 ```
 
 Open `.env` file with your favorite editor, and setup database connection:
@@ -30,13 +30,13 @@ DB_PASSWORD=
 Generate your application encryption key using:
 
 ```
-$ php artisan key:generate
+php artisan key:generate
 ```
 
 Generate secret key
 
 ```
-$ php artisan jwt:secret
+php artisan jwt:secret
 ```
 
 ## Local Run
@@ -44,13 +44,13 @@ $ php artisan jwt:secret
 First you need enter `migrate:fresh` command, to run all of migrations and seed your database:
 
 ```
-$ php artisan migrate:fresh --seed
+php artisan migrate:fresh --seed
 ```
 
 You can use the `serve` Artisan command to start the server. This command will start the development server at `http://localhost:8000`:
 
 ```
-$ php artisan serve
+php artisan serve
 ```
 
 ## Login information
