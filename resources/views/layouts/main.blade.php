@@ -24,7 +24,7 @@
 
 
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
-  <script src="https://cdn.skyal.co/libs/l2/0.4.1/l2.js"></script>
+  <script src="{{ asset('library/scripts/l2.js?21C201') }}"></script>
   <script src="{{ asset('library/scripts/common.js?20H401') }}"></script>
 
   @stack('scripts')
