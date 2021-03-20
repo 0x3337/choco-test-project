@@ -10,7 +10,7 @@ composer install
 
 ## Configure
 
-To confugure your environment, you need copy `.env.example` and rename it to `.env`:
+To configure your environment, you need copy `.env.example` and rename it to `.env`:
 
 ```
 cp .env.example .env
