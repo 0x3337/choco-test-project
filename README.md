@@ -1,6 +1,6 @@
 # Choco Test Project
 
-## Installing
+## Installation
 
 Go to project directory and install defined dependencies for project by running the `install` command:
 
